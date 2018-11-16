@@ -34,7 +34,7 @@ labels = range(10)
 num_classes = y_train.shape[1]
 
 
-# create model
+# create model (w/ extra dense layer)
 model = Sequential()
 model.add(Flatten(input_shape=(img_width, img_height)))
 model.add(Dense(config.hidden_nodes, activation='relu'))

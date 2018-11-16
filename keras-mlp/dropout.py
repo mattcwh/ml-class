@@ -32,12 +32,16 @@ labels = range(10)
 
 num_classes = y_train.shape[1]
 
+print(y_train.shape)
+exit()
+
 # create model
 model=Sequential()
 model.add(Flatten(input_shape=(img_width,img_height)))
 model.add(Dropout(config.dropout))
 model.add(Dense(config.hidden_nodes, activation='relu'))
 model.add(Dropout(config.dropout))
+model.add(Dense(200, activation='relu'))
 model.add(Dense(num_classes, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer=config.optimizer,
                     metrics=['accuracy'])

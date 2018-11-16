@@ -23,7 +23,7 @@ X_train /= 255.
 X_test = X_test.astype('float32')
 X_test /= 255.
 
-#reshape input data
+#reshape input data *needs reshape for greyscale because they always expect a third dimension but not for colours eg. R,G,B.
 X_train = X_train.reshape(X_train.shape[0], config.img_width, config.img_height, 1)
 X_test = X_test.reshape(X_test.shape[0], config.img_width, config.img_height, 1)
 
@@ -38,10 +38,20 @@ model = Sequential()
 model.add(Conv2D(32,
     (config.first_layer_conv_width, config.first_layer_conv_height),
     input_shape=(28, 28,1),
+    padding = "same",
     activation='relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(config.dropout))
+model.add(Conv2D(32,
+    (config.first_layer_conv_width, config.first_layer_conv_height),
+    padding="same",
+    activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(config.dropout))
 model.add(Flatten())
+model.add(Dropout(config.dropout))
 model.add(Dense(config.dense_layer_size, activation='relu'))
+model.add(Dropout(config.dropout))
 model.add(Dense(num_classes, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer='adam',
